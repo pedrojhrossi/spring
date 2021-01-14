@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout/layout :: head"></head>
+    <body>
+        <header th:replace="layout/layout :: header"></header>
+        <div class="container py-4">
+            <div class="card bg-danger text-white">
+                <div class="card-header">Error: Acceso Negado!</div>
+                <div class="card-body">
+                    <!--<h5 class="card-title">Lo sentimos <span th:text="${#httpServletRequest.remoteUser}"></span>, NO posees permisos para acceder a este recursos.</h5>-->
+                    <h5 class="card-title">Lo sentimos <span th:text="${#authentication.name}"></span>, NO posees permisos para acceder a este recursos.</h5>
+                    <a th:href="@{/listar}" class="btn btn-outline-light" role="button">Ir al inicio</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer th:replace="layout/layout :: footer"></footer>
+</html>

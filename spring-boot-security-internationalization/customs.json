@@ -1,0 +1,23 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:text": {},
+        "th:object": {},
+        "th:alt": {},
+        "th:action": {},
+        "th:errors": {},
+        "th:each": {
+            "context": "tr"
+        },
+        "th:field": {},
+        "th:fragment": {},
+        "th:if": {},
+        "sec:authentication": {},
+        "th:src": {},
+        "sec:authorize": {},
+        "th:replace": {},
+        "th:href": {},
+        "th:class": {},
+        "th:value": {}
+    }
+}
