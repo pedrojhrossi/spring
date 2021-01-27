@@ -57,7 +57,8 @@ public class FacturaController {
             return "redirect:/listar";
         }
         model.addAttribute("factura", factura);
-        model.addAttribute("titulo", String.format(messageSource.getMessage("text.factura.ver.titulo", null, locale), factura.getDescripcion()));
+        model.addAttribute("titulo", String.format(messageSource.getMessage("text.factura.ver.titulo", null, locale),
+                factura.getDescripcion()));
         return "factura/ver";
     }
 
@@ -84,9 +85,9 @@ public class FacturaController {
     }
 
     @PostMapping("/form")
-    public String guardar(@Valid Factura factura, BindingResult result, Model model, 
-            @RequestParam(name = "item_id[]", required = false) Long[] itemId, 
-            @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad, 
+    public String guardar(@Valid Factura factura, BindingResult result, Model model,
+            @RequestParam(name = "item_id[]", required = false) Long[] itemId,
+            @RequestParam(name = "cantidad[]", required = false) Integer[] cantidad,
             RedirectAttributes flash, SessionStatus status, Locale locale) {
 
         if (result.hasErrors()) {
@@ -96,7 +97,7 @@ public class FacturaController {
 
         if (itemId == null || itemId.length == 0) {
             model.addAttribute("titulo", messageSource.getMessage("text.factura.form.titulo", null, locale));
-            model.addAttribute("error",  messageSource.getMessage("text.factura.flash.lineas.error", null, locale));
+            model.addAttribute("error", messageSource.getMessage("text.factura.flash.lineas.error", null, locale));
             return "factura/form";
         }
         for (int i = 0; i < itemId.length; i++) {
@@ -120,7 +121,7 @@ public class FacturaController {
         Factura factura = clienteService.findFacturaById(id);
         if (factura != null) {
             clienteService.deleteFactura(id);
-            flash.addFlashAttribute("success", 
+            flash.addFlashAttribute("success",
                     messageSource.getMessage("text.factura.flash.eliminar.success", null, locale));
             return "redirect:/ver/" + factura.getCliente().getId();
         }

@@ -16,6 +16,9 @@
 
     <properties>
         <java.version>11</java.version>
+        <!--<itext.version>7.1.14</itext.version>-->
+        <openpdf.version>1.3.24</openpdf.version>
+        <bouncycastle.version>1.68</bouncycastle.version>
     </properties>
 
     <dependencies>
@@ -42,6 +45,29 @@
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
+        <!--        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>${itext.version}</version>
+            <type>pom</type>
+        </dependency>-->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>${openpdf.version}</version>
+        </dependency>
+        <!--UTF-8 Fonts para OpenPDF-->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf-fonts-extra</artifactId>
+            <version>${openpdf.version}</version>
+        </dependency>
+        <!--BouncyCastle is used to sign PDF files-->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bouncycastle.version}</version>
         </dependency>
         
         <dependency>
