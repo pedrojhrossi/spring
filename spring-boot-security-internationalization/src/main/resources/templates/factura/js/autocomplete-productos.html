@@ -53,6 +53,7 @@ and open the template in the editor.
             var itemsHelper = {
                 calcularImporte: function (id, precio, cantidad) {
                     $("#total_importe_" + id).html(parseInt(precio) * parseInt(cantidad));
+                    this.calcularGranTotal();
                 },
 
                 hasProducto: function (id) {

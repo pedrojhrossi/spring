@@ -50,8 +50,8 @@ and open the template in the editor.
                             </tr>
                         </tbody>
                     </table>
-                    <h5 class="float-right" th:text="#{text.factura.form.total} + ': '">Gran Total 
-                        <span th:text="${factura.total}" class="badge badge-secondary"></span></h5>
+                    <h5 class="float-right" th:text="#{text.factura.form.total} + ': '">Gran Total
+                        <span th:text="${factura.total}" class="badge badge-secondary">0</span></h5>
                     <div class="card border-info mb-4" style="max-width: 20rem;">
                         <div class="card-header" th:text="#{text.factura.form.observacion}">Observaciones</div>
                         <div class="card-body">
@@ -62,7 +62,8 @@ and open the template in the editor.
                         </div>
                     </div>
                     <h4 class="card-title">
-                        <a class="btn btn-light btn-xs" th:href="@{'/ver/' + ${factura.cliente.id}}" th:utext="#{text.global.volver}"></a>
+                        <a class="btn btn-light btn-xs" th:href="@{'/ver/' + ${factura.cliente.id}}" 
+                           th:utext="#{text.global.volver}"></a>
                     </h4>
                 </div>
             </div>
