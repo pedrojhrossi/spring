@@ -5,6 +5,7 @@
  */
 package com.bolsadeideas.springboot.app.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "productos")
 public class Producto implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,13 +33,14 @@ public class Producto implements Serializable {
     private Double precio;
     @Temporal(TemporalType.DATE)
     @Column(name = "create_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createAt;
 
     @PrePersist
     public void prePersist() {
         createAt = new Date();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -70,6 +72,5 @@ public class Producto implements Serializable {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
-    
-    
+
 }
