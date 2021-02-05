@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <nav th:fragment="paginator">
+            <ul class="pagination">
+                <li class="page-item" th:class="${page.first ? 'page-item disabled' : 'page-item'}">
+                    <span class="page-link" th:if="${page.first}" th:text="#{text.paginator.first}">Primera</span>
+                    <a class="page-link" th:if="${!page.first}" th:href="@{${page.url}(page=0)}" 
+                       th:text="#{text.paginator.first}">Primera</a>
+                </li>
+                <li class="page-item" th:class="${!page.hasPrevious ? 'page-item disabled' : 'page-item'}">
+                    <span class="page-link" th:if="${!page.hasPrevious}" th:utext="#{text.paginator.previous}">&laquo;</span>
+                    <a class="page-link" th:if="${page.hasPrevious}" th:href="@{${page.url}(page=${page.paginaActual - 2})}"
+                       th:utext="#{text.paginator.previous}">&laquo;</a>
+                </li>
+                <li class="page-item" th:each="item : ${page.paginas}" th:class="${item.actual ? 'page-item active' : 'page-item'}">                    
+                    <span class="page-link"th:if="${item.actual}" th:text="${item.numeroPaginas}"></span>
+                    <a class="page-link" th:if="${!item.actual}" th:href="@{${page.url}(page=${item.numeroPaginas - 1})}" 
+                       th:text="${item.numeroPaginas}"></a>
+                </li>
+                <li class="page-item" th:class="${!page.hasNext ? 'page-item disabled' : 'page-item'}">
+                    <span class="page-link" th:if="${!page.hasNext}" th:utext="#{text.paginator.next}">&raquo;</span>
+                    <a class="page-link" th:if="${page.hasNext}" th:href="@{${page.url}(page=${page.paginaActual})}" 
+                       th:utext="#{text.paginator.next}">&raquo;</a>
+                </li>
+                <li class="page-item" th:class="${page.last ? 'page-item disabled' : 'page-item'}">
+                    <span class="page-link" th:if="${page.last}" th:text="#{text.paginator.last}">&Uacute;ltima</span>
+                    <a class="page-link" th:if="${!page.last}" th:href="@{${page.url}(page=${page.totalPaginas - 1})}"
+                       th:text="#{text.paginator.last}">&Uacute;ltima</a>
+                </li>
+            </ul>
+        </nav>
+    </body>
+</html>
