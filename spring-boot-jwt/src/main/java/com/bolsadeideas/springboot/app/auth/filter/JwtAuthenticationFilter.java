@@ -43,12 +43,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
+            throws AuthenticationException {
 
 //        TODO: Por defecto los parametros que se manejan son username y password
 //        String username = obtainUsername(request); 
 //        String password = obtainPassword(request);
-//        TODO: Para parametros personalizados
+//        TODO: Para parametros personalizados se usa el request y se solicita el parametro a traves del metodo getParameter()
         String username = request.getParameter("usuario");
         String password = request.getParameter("pass");
 
@@ -74,7 +75,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
+            FilterChain chain, Authentication authResult) throws IOException, ServletException {
         
 //        String username = authResult.getName();
         String username = ((User) authResult.getPrincipal()).getUsername();
@@ -88,6 +90,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setClaims(claims)
                 .setSubject(username)
                 .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS512), SignatureAlgorithm.HS512)
+//                .signWith(SignatureAlgorithm.HS512, "Alguna.Clave.Secreta.12345".getBytes("UTF-8"))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + (3600000L*4L)))
                 .compact();
