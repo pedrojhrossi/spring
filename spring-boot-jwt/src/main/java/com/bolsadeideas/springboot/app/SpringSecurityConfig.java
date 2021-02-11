@@ -6,7 +6,8 @@
 package com.bolsadeideas.springboot.app;
 
 import com.bolsadeideas.springboot.app.auth.filter.JwtAuthenticationFilter;
-import com.bolsadeideas.springboot.app.auth.handler.LoginSuccessHandler;
+import com.bolsadeideas.springboot.app.auth.filter.JwtAuthorizationFilter;
+//import com.bolsadeideas.springboot.app.auth.handler.LoginSuccessHandler;
 import com.bolsadeideas.springboot.app.models.service.JpaUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -62,6 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .exceptionHandling().accessDeniedPage("/error_403")
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
