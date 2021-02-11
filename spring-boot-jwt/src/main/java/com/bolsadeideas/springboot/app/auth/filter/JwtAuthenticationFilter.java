@@ -113,9 +113,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
 
 		String token = Jwts.builder().setClaims(claims).setSubject(username).signWith(secretKey)
-//				.signWith(Keys.hmacShaKeyFor("Alguna.Clave.Secreta.12345".getBytes(StandardCharsets.UTF_8)), 
-//						SignatureAlgorithm.HS512)
-//                .signWith(SignatureAlgorithm.HS512, "Alguna.Clave.Secreta.12345".getBytes("UTF-8"))
 				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + (3600000L * 4L)))
 				.compact();
 
