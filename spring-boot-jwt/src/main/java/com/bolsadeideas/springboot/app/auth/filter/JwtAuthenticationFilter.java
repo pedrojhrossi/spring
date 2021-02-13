@@ -5,21 +5,16 @@
  */
 package com.bolsadeideas.springboot.app.auth.filter;
 
+import com.bolsadeideas.springboot.app.auth.service.JwtService;
+import com.bolsadeideas.springboot.app.auth.service.JwtServiceImpl;
 import com.bolsadeideas.springboot.app.models.entity.Usuario;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +23,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -39,15 +33,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	public static final SecretKey secretKey = new SecretKeySpec("AlgunaLlaveSecreta.78/#sfhj34576{~2345234".getBytes(),
-			SignatureAlgorithm.HS256.getJcaName());
-
 	private AuthenticationManager authenticationManager;
 
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+	private JwtService jwtService;
+
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
 		this.authenticationManager = authenticationManager;
 //        TODO: Por defecto la ruta de login es "/login", se modifica de la siguiente manera
 		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
+
+		this.jwtService = jwtService;
 	}
 
 	@Override
@@ -103,28 +98,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-//        String username = authResult.getName();
-		String username = ((User) authResult.getPrincipal()).getUsername();
+		String token = jwtService.create(authResult);
 
-		Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
-
-		Claims claims = Jwts.claims();
-//        TODO: Usando new ObjectMapper().writeValueAsString() para transformar Objeto a JSON
-		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-
-		String token = Jwts.builder().setClaims(claims).setSubject(username).signWith(secretKey)
-//				.signWith(Keys.hmacShaKeyFor("Alguna.Clave.Secreta.12345".getBytes(StandardCharsets.UTF_8)), 
-//						SignatureAlgorithm.HS512)
-//                .signWith(SignatureAlgorithm.HS512, "Alguna.Clave.Secreta.12345".getBytes("UTF-8"))
-				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + (3600000L * 4L)))
-				.compact();
-
-		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader(JwtServiceImpl.HEADER_STRING, JwtServiceImpl.AUTHENTICATION_SCHEME_BASIC + token);
 
 		Map<String, Object> body = new HashMap<String, Object>();
 		body.put("token", token);
 		body.put("user", (User) authResult.getPrincipal());
-		body.put("mensaje", String.format("Hola %s, Ha iniciado sesion con exito!", username));
+		body.put("mensaje", String.format("Hola %s, Ha iniciado sesion con exito!",
+				((User) authResult.getPrincipal()).getUsername()));
 
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		response.setStatus(200);
